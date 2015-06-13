@@ -1,6 +1,6 @@
 #----------------------------
-# Author: Tamir Omara
 # Title: Reading from the Web
+# Author: Tamir Omara
 # Week: 02
 # Class: 12
 #----------------------------
