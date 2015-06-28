@@ -1,6 +1,6 @@
 # -----------------------
 # Author : Tamir Omara
-# Title : Introduction to dplyr
+# Title : Swirl Activity
 # Week : 03
 # Class : 
 # -----------------------
@@ -77,9 +77,33 @@ mutate(cran3, correct_size = size + 1000)
 # ----------------------------------------------------------------------------------------
 # summarize : generate summary statistics                                                -
 # ----------------------------------------------------------------------------------------
-summarize(cran, avg_bytes = mean(size))
+summarize(cran, avg_bytes = mean(size)) # returns mean of all values in the size column!
+
 # summarize if more interesting when used with data that has been grouped by values of
 # a particular variable.
+# The main idea behind grouping data is that you want to break up your dataset into groups
+# of rows based on the values of one or more variables. This can be done with group_by
 
+cran <- tbl_df(mydf)                  # put mydf into a data frame table.
+by_package <- group_by(cran, package) # any operation applied to the grouped data will take
+                                      # place on a per package basis.
 
+summarize(by_package, mean(size)) # mean download size for each package, df is grouped by package already.
 
+# n()                : total no. of rows i.e. downloads for each package.
+# n_distinct(ip_id)  : total no. of unique downloads for each package measured by distinct ip_id
+# n_distinct(country): no. of countries in which each package was downloaded.
+# mean(size)         : average download size for each package in bytes.
+pack_sum <- summarize(by_package,
+                      count     = n(),
+                      unique    = n_distinct(ip_id),
+                      countries = n_distinct(country),
+                      avg_byte  = mean(size))
+
+# What was the most popular package on that day based on count ie no. of downloads?
+quantile(pack_sum$count, probs = 0.99)      # 1. find the 0.99 or 99%, sample quantile and bottom 99%
+top_counts <- filter(pack_sum, count > 679) # 2. isolate packages which had more than 679 total downloads.
+top_counts_sorted <- arrange(top_counts, desc(count)) # arrange from most to less based on count.
+
+quantile(pack_sum$unique, probs = 0.99)
+top_unique <- filter(pack_sum, unique > 465)
