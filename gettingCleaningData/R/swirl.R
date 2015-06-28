@@ -47,6 +47,7 @@ select(cran, ip_id, package, country) # select three variables from cran
 select(cran, r_arch:country)          # select r_arch through country
 select(cran, country:r_arch)          # select country through r_arch
 select(cran, -(X:size))               # select and drop x through size variables
+# rename    : rename variables in a dataframe
 
 # ----------------------------------------------------------------------------------------
 # filter    : extract a subset of rows from a df based on logical condition              -
@@ -61,10 +62,16 @@ filter(cran, !is.na(r_version))                     # filter non NA values from 
 # ----------------------------------------------------------------------------------------
 cran2 <- select(cran, size:ip_id) # select 
 arrange(cran2, ip_id)             # arrange rows of cran ascendingly according to ip_id 
+arrange(cran2, desc(ip_id))       # arrange rows of cran descendingly according to ip_id
+arrange(cran2, package, ip_id)    # arrange rows ascendingly according to package names THEN ip_id
+arrange(cran2, country, desc(r_version), ip_id)
 
+# ----------------------------------------------------------------------------------------
+# mutate    : add new variables/columns or transform existing ones                       -
+# ----------------------------------------------------------------------------------------
+cran3 <- select(cran, ip_id, package, size)
+mutate(cran3, size_mb = size / 2^20)  # create size_mb variable and add to the end of df 
+mutate(cran3, size_mb = size / 2^20, size_gb = size_mb / 2^10)
+mutate(cran3, correct_size = size + 1000)
 
-
-
-# rename    : rename variables in a dataframe
-# mutate    : add new variables/columns or transform existing ones
 # summarize : generate summary statistics 
