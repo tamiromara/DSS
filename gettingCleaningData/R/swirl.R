@@ -74,4 +74,12 @@ mutate(cran3, size_mb = size / 2^20)  # create size_mb variable and add to the e
 mutate(cran3, size_mb = size / 2^20, size_gb = size_mb / 2^10)
 mutate(cran3, correct_size = size + 1000)
 
-# summarize : generate summary statistics 
+# ----------------------------------------------------------------------------------------
+# summarize : generate summary statistics                                                -
+# ----------------------------------------------------------------------------------------
+summarize(cran, avg_bytes = mean(size))
+# summarize if more interesting when used with data that has been grouped by values of
+# a particular variable.
+
+
+
